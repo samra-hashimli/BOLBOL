@@ -1,5 +1,6 @@
 from django.db import models
 from .validators import validate_phone_number
+from .utils.masking import mask_fullname
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
@@ -67,3 +68,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["email"]
 
     objects = UserManager()
+
+    @property
+    def masked_fullname(self):
+        return mask_fullname(self.full_name) if self.full_name else None

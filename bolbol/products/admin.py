@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils import timezone
+from accounts.utils.masking import mask_fullname
 from .models import (
     City, Brand, Category, SubCategory, 
     Product, Favourite, Comment, ProductImage,
@@ -110,7 +111,7 @@ class FavouritesAdmin(admin.ModelAdmin):
 # ---------------- Comment Admin ----------------
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'product', 'short_text', 'created_at')
+    list_display = ('id', 'user_masked_name', 'product', 'short_text', 'created_at')
     list_filter = ('created_at', 'product')
     search_fields = ('text', 'user__phone_number', 'product__title')
     readonly_fields = ('created_at',)
@@ -118,3 +119,8 @@ class CommentAdmin(admin.ModelAdmin):
     def short_text(self, obj):
         return obj.text[:40] + "..." if len(obj.text) > 40 else obj.text
     short_text.short_description = "Comment"
+
+    def user_masked_name(self, obj):
+        return mask_fullname(obj.user.full_name)
+    user_masked_name.short_description = "User"
+

@@ -1,6 +1,7 @@
 from datetime import timedelta
 from django.utils import timezone
 from django.db import models
+from accounts.utils.masking import mask_fullname
 from accounts.models import User
 
 
@@ -211,7 +212,10 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user} - {self.product.title}"
+        if self.user.full_name:
+            masked_name = mask_fullname(self.user.full_name) or self.user.phone_number
+            return f"{masked_name} - {self.product.title}"
+        return f"{self.user.phone_number} - {self.product.title}"
 
 
 class ProductImage(models.Model):
