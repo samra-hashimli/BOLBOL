@@ -9,7 +9,7 @@ class OTPSenderAPIView(APIView):
     def post(self, request):
         phone_number = request.data.get("phone_number")
         otp_code = generate_otp_code()
-        cache.set(phone_number, otp_code, timeout=3000)
+        cache.set(phone_number, otp_code, timeout=300)
 
         print(f"Your OTP code is {otp_code}")
 
