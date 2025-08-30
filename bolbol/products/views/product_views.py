@@ -2,6 +2,7 @@ from django.utils import timezone
 from rest_framework import permissions
 from rest_framework.views import APIView, Response, status
 from ..models.product import Product
+from django.db.models import F
 from ..serializers.product_serializer import ProductSerializer
 
 
@@ -89,8 +90,9 @@ class FilteredProductsAPIView(APIView):
 class ProductDetailAPIView(APIView):
     def get(self, request, product_id):
         product = Product.objects.get(id=product_id)
-        product.views_count += 1
-        product.save(update_fields=["views_count"])
+        product.view_count = F("views_count" + 1)
+        product.save(update_fields=["view_count"])
+        product.refresh_from_db()
 
         serializer = ProductSerializer(product)
 
