@@ -1,4 +1,4 @@
-from .models import User
+from .models.user import User
 from django.core.cache import cache
 from .utils.generate_otp import generate_otp_code
 from rest_framework.views import APIView, Response, status

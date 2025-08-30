@@ -2,7 +2,7 @@ from datetime import timedelta
 from django.utils import timezone
 from django.db import models
 from accounts.utils.masking import mask_fullname
-from accounts.models import User
+from accounts.models.user import User
 
 
 class City(models.Model):
