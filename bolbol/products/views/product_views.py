@@ -1,9 +1,8 @@
 from django.utils import timezone
 from rest_framework import permissions
 from rest_framework.views import APIView, Response, status
-from .models import Product, Category, Favourite, Comment, ProductSubscription
-from .serializers import (ProductSerializer, CategorySerializer, 
-                          FavouritesSerializer, CommentSerializer)
+from ..models.product import Product
+from ..serializers.product_serializer import ProductSerializer
 
 
 class ProductsAPIView(APIView):
@@ -36,7 +35,7 @@ class ProductsAPIView(APIView):
                 status=status.HTTP_201_CREATED
             )
         return Response({"errors": serializer.errors}, status=400)
-
+    
 
 class VIPProductsAPIView(APIView):
     def get(self, request):
@@ -62,7 +61,7 @@ class PremiumProductsAPIView(APIView):
 
         serializer = ProductSerializer(premium_products, many=True)
         return Response(serializer.data)
-
+    
 
 class FilteredProductsAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -134,52 +133,3 @@ class ProductDetailAPIView(APIView):
         product.delete()
         return Response({"message": "Product deleted successfully"}, 
                         status=status.HTTP_200_OK)
-
-
-class CategoriesAPIView(APIView):
-    def get(self, request):
-        categories = Category.objects.all()
-        serializer = CategorySerializer(categories, many=True)
-        return Response(serializer.data)
-
-
-class AddToFavouritesAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request):
-        data = request.data
-        user = request.user
-        product_id = request.data.get("product")
-        favourite = Favourite.objects.filter(user=user, product_id=product_id)
-
-        if favourite.exists():
-            favourite.delete()
-            return Response({"message": "Product removed from Favourites"})
-
-        serializer = FavouritesSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save(user=user)
-            return Response({"message": "Product added to Favourites successfully"})
-        return Response({"errors": serializer.errors}, 
-                        status=status.HTTP_400_BAD_REQUEST)
-
-
-class CommentAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, product_id):
-        comments = Comment.objects.filter(product_id=product_id)
-        serializer = CommentSerializer(comments, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, product_id):
-        data = request.data
-        product = Product.objects.get(id=product_id)
-        serializer = CommentSerializer(data=data)
-
-        if serializer.is_valid():
-            serializer.save(user=request.user, product=product)
-            return Response(serializer.data, 
-                            status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, 
-                        status=status.HTTP_400_BAD_REQUEST)

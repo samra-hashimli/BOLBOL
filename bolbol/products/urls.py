@@ -5,8 +5,9 @@ from .views import (ProductsAPIView,
                     VIPProductsAPIView,
                     PremiumProductsAPIView,
                     AddToFavouritesAPIView,
-                    CommentAPIView, 
-                    FilteredProductsAPIView)
+                    CommentsAPIView, 
+                    FilteredProductsAPIView,
+                    CitiesAPIView)
 
 
 urlpatterns = [
@@ -26,6 +27,11 @@ urlpatterns = [
         name="categories"
     ),
     path(
+        "cities/",
+        CitiesAPIView.as_view(),
+        name="cities"
+    ),
+    path(
         "products/vip/",
         VIPProductsAPIView.as_view(),
         name="vip-products"
@@ -42,7 +48,7 @@ urlpatterns = [
     ),
     path(
         "products/<int:product_id>/comments/",
-        CommentAPIView.as_view(),
+        CommentsAPIView.as_view(),
         name="comments"
     ),
     path(

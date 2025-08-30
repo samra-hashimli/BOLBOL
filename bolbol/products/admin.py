@@ -1,11 +1,16 @@
 from django.contrib import admin
 from django.utils import timezone
 from accounts.utils.masking import mask_fullname
-from .models import (
-    City, Brand, Category, SubCategory, 
-    Product, Favourite, Comment, ProductImage,
-    Subscription, ProductSubscription
-)
+from .models.brand import Brand
+from .models.category import Category
+from .models.city import City
+from .models.comment import Comment
+from .models.favourite import Favourite
+from .models.image import ProductImage
+from .models.product import Product, ProductSubscription
+from .models.subcategory import SubCategory
+from .models.subscription import Subscription
+
 
 # ---------------- City Admin ----------------
 @admin.register(City)

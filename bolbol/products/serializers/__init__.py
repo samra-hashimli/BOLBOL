@@ -1,0 +1,6 @@
+from .product_serializer import ProductSerializer
+from .city_serializer import CitySerializer
+from .subcategory_serializer import SubCategorySerializer
+from .category_serializer import CategorySerializer
+from .favourite_serializer import FavouritesSerializer
+from .comment_serializer import CommentSerializer
