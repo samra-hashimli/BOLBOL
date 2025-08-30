@@ -52,12 +52,15 @@ class ProductImageInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'title', 'price', 'status', 'vip_status', 'premium_status',
+        'id', 'title', 'price', 
+        'status', 'vip_status', 'premium_status', 
         'views_count', 'created_at', 'expires_at'
     )
-    list_filter = ('status', 'category', 'subcategory', 'created_at')
+    list_filter = ('status', 'category', 
+                   'subcategory', 'created_at')
     search_fields = ('title', 'description', 'user__phone_number')
-    readonly_fields = ('views_count', 'created_at', 'updated_at', 'expires_at')
+    readonly_fields = ('views_count', 'created_at', 
+                       'updated_at', 'expires_at')
     inlines = [ProductImageInline]
     list_editable = ('status',)
 
@@ -81,13 +84,15 @@ class ProductAdmin(admin.ModelAdmin):
 # ---------------- Subscription & ProductSubscription Admin ----------------
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subscription_name', 'price', 'availability_time')
+    list_display = ('id', 'subscription_name', 
+                    'price', 'availability_time')
     search_fields = ('subscription_name',)
 
 
 @admin.register(ProductSubscription)
 class ProductSubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'subscription_type', 'activated_at', 'expires_at', 'is_active')
+    list_display = ('id', 'product', 'subscription_type', 
+                    'activated_at', 'expires_at', 'is_active')
     list_filter = ('subscription_type',)
     search_fields = ('product__title', 'subscription_type__subscription_name')
     readonly_fields = ('activated_at', 'expires_at')
@@ -116,7 +121,8 @@ class FavouritesAdmin(admin.ModelAdmin):
 # ---------------- Comment Admin ----------------
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_masked_name', 'product', 'short_text', 'created_at')
+    list_display = ('id', 'user_masked_name', 'product', 
+                    'short_text', 'created_at')
     list_filter = ('created_at', 'product')
     search_fields = ('text', 'user__phone_number', 'product__title')
     readonly_fields = ('created_at',)

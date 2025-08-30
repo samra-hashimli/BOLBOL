@@ -6,8 +6,13 @@ from .product import Product
 
 class Comment(models.Model):
     text = models.TextField(max_length=350)
-    product = models.ForeignKey(Product, related_name="comments", on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, 
+        related_name="comments",
+        on_delete=models.CASCADE
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

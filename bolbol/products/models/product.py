@@ -27,13 +27,42 @@ class Product(models.Model):
     description = models.TextField(max_length=500)
     views_count = models.PositiveIntegerField(default=0)
 
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True)
-    brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(
+        Category, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True
+    )
+    subcategory = models.ForeignKey(
+        SubCategory, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True
+    )
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True
+    )
+    city = models.ForeignKey(
+        City, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True
+    )
+    brand = models.ForeignKey(
+        Brand, 
+        on_delete=models.SET_NULL,
+         null=True, 
+        blank=True
+    )
+    status = models.CharField(
+        choices=STATUS_LIST, 
+        default=PENDING, 
+        max_length=16
+    )
 
-    status = models.CharField(choices=STATUS_LIST, default=PENDING, max_length=16)
     is_vip = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
 
@@ -70,7 +99,8 @@ class Product(models.Model):
                 defaults={"expires_at": timezone.now() + subscription.availability_time}
             )
         else:
-            ProductSubscription.objects.filter(product=self, subscription_type__subscription_name="VIP").delete()
+            ProductSubscription.objects.filter(product=self, 
+                                               subscription_type__subscription_name="VIP").delete()
 
         if self.is_premium:
             subscription, _ = Subscription.objects.get_or_create(
@@ -83,7 +113,8 @@ class Product(models.Model):
                 defaults={"expires_at": timezone.now() + subscription.availability_time}
             )
         else:
-            ProductSubscription.objects.filter(product=self, subscription_type__subscription_name="Premium").delete()
+            ProductSubscription.objects.filter(product=self, 
+                                               subscription_type__subscription_name="Premium").delete()
 
     class Meta:
         verbose_name = "Product"
@@ -91,8 +122,15 @@ class Product(models.Model):
 
 
 class ProductSubscription(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="subscriptions")
-    subscription_type = models.ForeignKey(Subscription, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, 
+        on_delete=models.CASCADE, 
+        related_name="subscriptions"
+    )
+    subscription_type = models.ForeignKey(
+        Subscription, 
+        on_delete=models.CASCADE
+    )
     activated_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField()
 
