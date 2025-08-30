@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.db import models
 from accounts.models.user import User
 from .city import City
-from .brand import Brand
 from .category import Category
 from .subcategory import SubCategory
 from .subscription import Subscription
@@ -26,6 +25,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(max_length=500)
     views_count = models.PositiveIntegerField(default=0)
+    characteristics = models.JSONField(default=dict, blank=True)
 
     category = models.ForeignKey(
         Category, 
@@ -49,12 +49,6 @@ class Product(models.Model):
         City, 
         on_delete=models.SET_NULL, 
         null=True, 
-        blank=True
-    )
-    brand = models.ForeignKey(
-        Brand, 
-        on_delete=models.SET_NULL,
-         null=True, 
         blank=True
     )
     status = models.CharField(

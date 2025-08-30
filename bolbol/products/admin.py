@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils import timezone
 from accounts.utils.masking import mask_fullname
-from .models.brand import Brand
 from .models.category import Category
 from .models.city import City
 from .models.comment import Comment
@@ -15,13 +14,6 @@ from .models.subscription import Subscription
 # ---------------- City Admin ----------------
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-    search_fields = ('name',)
-
-
-# ---------------- Brand Admin ----------------
-@admin.register(Brand)
-class BrandAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     search_fields = ('name',)
 

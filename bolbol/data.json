@@ -1,0 +1,280 @@
+{
+  "Nəqliyyat": {
+    "Avtomobillər": {
+      "fields": {
+        "marka": {
+          "type": "string",
+          "inner_field": {
+            "model": {
+              "type": "string",
+              "inner_field": {
+                "buraxılış_ili": {
+                  "type": "number"
+                },
+                "yanacaq_növü": {
+                  "type": "string",
+                  "options": ["Benzin", "Dizel", "Hibrid", "Elektrik"]
+                },
+                "ötürücü": {
+                  "type": "string",
+                  "options": ["Mexaniki", "Avtomat", "Robotlaşdırılmış"]
+                }
+              }
+            }
+          }
+        },
+        "rəng": {
+          "type": "string",
+          "options": ["Qara", "Ağ", "Gümüşü", "Göy", "Qırmızı"]
+        },
+        "yürüş": {
+          "type": "number"
+        }
+      }
+    },
+    "Motosikletlər": {
+      "fields": {
+        "marka": { "type": "string" },
+        "model": { "type": "string" },
+        "mühərrik_həcmi": { "type": "number" }
+      }
+    }
+  },
+
+  "Daşınmaz əmlak": {
+    "Mənzillər": {
+      "fields": {
+        "otaq_sayı": { "type": "number" },
+        "sahə": { "type": "number" },
+        "mərtəbə": { "type": "number" },
+        "təmir": {
+          "type": "string",
+          "options": ["Təmirli", "Təmirsiz", "Yarımçıq"]
+        }
+      }
+    },
+    "Villalar": {
+      "fields": {
+        "sahə": { "type": "number" },
+        "torpaq_sahəsi": { "type": "number" },
+        "otaq_sayı": { "type": "number" }
+      }
+    }
+  },
+
+  "Geyim": {
+    "Kişi geyimləri": {
+      "fields": {
+        "növ": {
+          "type": "string",
+          "options": ["Köynək", "Şalvar", "Kostyum", "Ayaqqabı"]
+        },
+        "ölçü": { "type": "string", "options": ["S", "M", "L", "XL"] },
+        "rəng": { "type": "string" }
+      }
+    },
+    "Qadın geyimləri": {
+      "fields": {
+        "növ": {
+          "type": "string",
+          "options": ["Don", "Bluz", "Ayaqqabı", "Çanta"]
+        },
+        "ölçü": { "type": "string", "options": ["XS", "S", "M", "L", "XL"] },
+        "material": { "type": "string" }
+      }
+    }
+  },
+
+  "Uşaq əşyaları": {
+    "Oyunçaqlar": {
+      "fields": {
+        "növ": {
+          "type": "string",
+          "options": ["Maşın", "Kukla", "Konstruksiya", "Top"]
+        },
+        "yaş_qrupu": { "type": "string", "options": ["0-3", "3-6", "6-12"] }
+      }
+    },
+    "Uşaq geyimləri": {
+      "fields": {
+        "ölçü": { "type": "string" },
+        "rəng": { "type": "string" }
+      }
+    }
+  },
+
+  "Kosmetika": {
+    "Makyaj": {
+      "fields": {
+        "növ": { "type": "string", "options": ["Pomada", "Tonal", "Tuș"] },
+        "brend": { "type": "string" },
+        "rəng": { "type": "string" }
+      }
+    },
+    "Dəriyə qulluq": {
+      "fields": {
+        "məhsul_növü": {
+          "type": "string",
+          "options": ["Krem", "Maska", "Toner"]
+        },
+        "dəri_tipi": {
+          "type": "string",
+          "options": ["Quru", "Yağlı", "Kombinə", "Normal"]
+        }
+      }
+    }
+  },
+
+  "İş elanları": {
+    "Vakansiyalar": {
+      "fields": {
+        "vəzifə": { "type": "string" },
+        "şirkət": { "type": "string" },
+        "maaş": { "type": "number" },
+        "iş_rejimi": {
+          "type": "string",
+          "options": ["Tam", "Yarım", "Uzaqdan"]
+        }
+      }
+    }
+  },
+
+  "Elektronika": {
+    "Telefonlar": {
+      "fields": {
+        "brend": {
+          "type": "string",
+          "inner_field": {
+            "model": {
+              "type": "string",
+              "inner_field": {
+                "yaddaş": {
+                  "type": "string",
+                  "options": ["64GB", "128GB", "256GB", "512GB"]
+                }
+              }
+            }
+          }
+        },
+        "rəng": { "type": "string" },
+        "zəmanət": { "type": "boolean" }
+      }
+    },
+    "Noutbuklar": {
+      "fields": {
+        "brend": { "type": "string" },
+        "prosessor": { "type": "string" },
+        "ram": { "type": "string", "options": ["8GB", "16GB", "32GB"] },
+        "disk": { "type": "string", "options": ["256GB SSD", "512GB SSD", "1TB SSD"] }
+      }
+    }
+  },
+
+  "Ev və bağ": {
+    "Mebel": {
+      "fields": {
+        "növ": { "type": "string", "options": ["Divan", "Stol", "Stul", "Dolab"] },
+        "material": { "type": "string" },
+        "rəng": { "type": "string" }
+      }
+    },
+    "Məişət texnikası": {
+      "fields": {
+        "növ": { "type": "string", "options": ["Soyuducu", "Paltaryuyan", "Tozsoran"] },
+        "brend": { "type": "string" }
+      }
+    }
+  },
+
+  "Ərzaq": {
+    "Meyvə və tərəvəz": {
+      "fields": {
+        "növ": { "type": "string" },
+        "çəki": { "type": "number" },
+        "təzəlik": { "type": "string", "options": ["Təzə", "Dondurulmuş"] }
+      }
+    },
+    "İçkilər": {
+      "fields": {
+        "növ": { "type": "string", "options": ["Suy", "Şirə", "Qazlı içki"] },
+        "həcm": { "type": "string" }
+      }
+    }
+  },
+
+  "Ev heyvanları və bitkilər": {
+    "Heyvanlar": {
+      "fields": {
+        "növ": { "type": "string", "options": ["Pişik", "İt", "Quş", "Balıq"] },
+        "yaş": { "type": "number" },
+        "cins": { "type": "string" }
+      }
+    },
+    "Bitkilər": {
+      "fields": {
+        "növ": { "type": "string" },
+        "yaş": { "type": "string" },
+        "qablama": { "type": "string", "options": ["Saksı", "Torpaq"] }
+      }
+    }
+  },
+
+  "Xidmətlər": {
+    "Təmir xidməti": {
+      "fields": {
+        "növ": { "type": "string", "options": ["Elektrik", "Santexnika", "İnşaat"] },
+        "təcrübə": { "type": "number" }
+      }
+    },
+    "Təlim kursları": {
+      "fields": {
+        "mövzu": { "type": "string" },
+        "müddət": { "type": "string" }
+      }
+    }
+  },
+
+  "İdman, musiqi və hobbi": {
+    "İdman ləvazimatları": {
+      "fields": {
+        "növ": { "type": "string", "options": ["Top", "Qantəl", "Velosiped"] },
+        "brend": { "type": "string" }
+      }
+    },
+    "Musiqi alətləri": {
+      "fields": {
+        "növ": { "type": "string", "options": ["Gitara", "Piano", "Skripka"] },
+        "material": { "type": "string" }
+      }
+    }
+  },
+
+  "Pulsuz": {
+    "Verilənlər": {
+      "fields": {
+        "növ": { "type": "string" },
+        "təsvir": { "type": "string" }
+      }
+    }
+  },
+
+  "Super təklif": {
+    "Endirimli məhsullar": {
+      "fields": {
+        "məhsul": { "type": "string" },
+        "endirim_faizi": { "type": "number" },
+        "keçmiş_qiymət": { "type": "number" }
+      }
+    }
+  },
+
+  "Mağazalar və şirkətlər": {
+    "Şirkət profili": {
+      "fields": {
+        "ad": { "type": "string" },
+        "fəaliyyət_sahəsi": { "type": "string" },
+        "işçi_sayı": { "type": "number" }
+      }
+    }
+  }
+}

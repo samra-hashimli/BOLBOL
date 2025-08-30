@@ -1,5 +1,4 @@
 from .city import City
-from .brand import Brand
 from .category import Category
 from .subcategory import SubCategory
 from .product import Product

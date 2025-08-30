@@ -1,8 +1,14 @@
+import json
+
+from django.db.models import F
+from django.conf import settings
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 from rest_framework import permissions
 from rest_framework.views import APIView, Response, status
 from ..models.product import Product
-from django.db.models import F
+from ..models.category import Category
+from ..models.subcategory import SubCategory
 from ..serializers.product_serializer import ProductSerializer
 
 
@@ -10,10 +16,7 @@ class ProductsAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        products = Product.objects.filter(
-            status=Product.APPROVED,
-            expires_at__gt=timezone.now()
-        )
+        products = Product.objects.all()
         category_id = request.query_params.get("category")
         city_id = request.query_params.get("city")
 
@@ -35,13 +38,12 @@ class ProductsAPIView(APIView):
                 {"message": "New product created"},
                 status=status.HTTP_201_CREATED
             )
-        return Response({"errors": serializer.errors}, status=400)
-    
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class VIPProductsAPIView(APIView):
     def get(self, request):
         vip_products = Product.objects.filter(
-            status=Product.APPROVED,
             subscriptions__subscription_type__subscription_name="VIP",
             subscriptions__activated_at__lte=timezone.now(),
             subscriptions__expires_at__gt=timezone.now(),
@@ -54,7 +56,6 @@ class VIPProductsAPIView(APIView):
 class PremiumProductsAPIView(APIView):
     def get(self, request):
         premium_products = Product.objects.filter(
-            status=Product.APPROVED,
             subscriptions__subscription_type__subscription_name="Premium",
             subscriptions__activated_at__lte=timezone.now(),
             subscriptions__expires_at__gt=timezone.now(),
@@ -62,7 +63,7 @@ class PremiumProductsAPIView(APIView):
 
         serializer = ProductSerializer(premium_products, many=True)
         return Response(serializer.data)
-    
+
 
 class FilteredProductsAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -89,9 +90,10 @@ class FilteredProductsAPIView(APIView):
 
 class ProductDetailAPIView(APIView):
     def get(self, request, product_id):
-        product = Product.objects.get(id=product_id)
-        product.view_count = F("views_count" + 1)
-        product.save(update_fields=["view_count"])
+        product = get_object_or_404(Product, id=product_id)
+
+        product.views_count = F("views_count") + 1
+        product.save(update_fields=["views_count"])
         product.refresh_from_db()
 
         serializer = ProductSerializer(product)
@@ -110,7 +112,7 @@ class ProductDetailAPIView(APIView):
         })
 
     def put(self, request, product_id):
-        product = Product.objects.get(id=product_id)
+        product = get_object_or_404(Product, id=product_id)
 
         if product.user != request.user:
             return Response({"message": "Not allowed"}, 
@@ -126,12 +128,27 @@ class ProductDetailAPIView(APIView):
                         status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, product_id):
-        product = Product.objects.get(id=product_id)
+        product = get_object_or_404(Product, id=product_id)
 
         if product.user != request.user:
             return Response({"message": "Not allowed"}, 
                             status=status.HTTP_400_BAD_REQUEST)
 
         product.delete()
-        return Response({"message": "Product deleted successfully"}, 
-                        status=status.HTTP_200_OK)
+        return Response({"message": "Product deleted successfully"}, status=status.HTTP_200_OK)
+
+
+class ProductParametersAPIView(APIView):
+    def get(self, request, category_id, subcategory_id):
+        with open(settings.BASE_DIR / "parameters.json", "r") as f:
+            parameters = json.load(f)
+
+        category = get_object_or_404(Category, id=category_id)
+        subcategory = get_object_or_404(SubCategory, id=subcategory_id)
+
+        try:
+            fields = parameters[category.name][subcategory.name]
+        except KeyError:
+            fields = []
+
+        return Response({"fields": fields})
