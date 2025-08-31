@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from ..models.product import Product
 from rest_framework import serializers
+from ..models import Category, SubCategory
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -11,11 +12,11 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate_characteristics(self, value):
-        category = self.initial_data.get("category")
-        subcategory = self.initial_data.get("subcategory")
+        request = self.context.get("request")
+        category = request.data.get("category")
+        subcategory = request.data.get("subcategory")
 
         if category and subcategory:
-            from ..models import Category, SubCategory
             ctg = Category.objects.get(id=category)
             sub = SubCategory.objects.get(id=subcategory)
 
@@ -27,7 +28,8 @@ class ProductSerializer(serializers.ModelSerializer):
             for key in value.keys():
                 if key not in valid_fields:
                     raise serializers.ValidationError(
-                        f"'{key}' is not a valid field for {ctg.name} -> {sub.name}"
+                        f"'{key} is not a valid for {ctg.name} -> {sub.name}"
                     )
 
         return value
+
