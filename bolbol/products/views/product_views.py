@@ -19,12 +19,20 @@ class ProductsAPIView(APIView):
         products = Product.objects.all()
         category_id = request.query_params.get("category")
         city_id = request.query_params.get("city")
+        min_price = request.query_params.get("min_price")
+        max_price = request.query_params.get("max_price")
 
         if city_id:
             products = products.filter(city_id=city_id)
 
         if category_id:
             products = products.filter(category_id=category_id)
+            
+        if min_price:
+            products = products.filter(price__gte=min_price)
+
+        if max_price:
+            products = products.filter(price__lte=max_price)
 
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
