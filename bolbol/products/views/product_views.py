@@ -27,12 +27,12 @@ class ProductsAPIView(APIView):
 
         if category_id:
             products = products.filter(category_id=category_id)
-
+            
         if min_price:
-            products = products.filter(price__gt=min_price)
+            products = products.filter(price__gte=min_price)
 
         if max_price:
-            products = products.filter(price__lt=max_price)
+            products = products.filter(price__lte=max_price)
 
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
